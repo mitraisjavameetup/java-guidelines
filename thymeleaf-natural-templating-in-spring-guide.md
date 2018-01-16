@@ -103,3 +103,17 @@ to: <div class="content" th:fragment="content">
 - The back-end developer then open the thymeleaf template (ie. `templates\index.html`) then bundle all resources needed by the page using dandelion then get and arrange all the elements in the template. See [index.html](https://github.com/erikfarhanmalik/thymeleaf-natural-templating/blob/master/src/main/resources/templates/index.html) for example.
 
 - For static section such as header, navigation bar, side menu, footer, etc. Always use the one from `templates/natural/index.html` and load only for the dynamic content from other pages. For example in [list-page.html](https://github.com/erikfarhanmalik/thymeleaf-natural-templating/blob/master/src/main/resources/templates/list-page.html) the navigation bar still load from `templates/natural/index.html` (`<div th:replace="natural/index::navigation-bar"></div>`) but load from `templates/natural/list-page.html` for the content, title, and in line script.
+
+- For features that involve ajax interaction, add real end point like in [list-page.html](https://github.com/erikfarhanmalik/thymeleaf-natural-templating/blob/master/src/main/resources/templates/natural/list-page.html):  
+
+```javascript
+function doSomeAjaxCall() {
+	$.ajax({method : "GET",
+			url : /*[[@{/api/employee/2}]]*/"http://localhost:9000/api/employee"})
+	.done(function(response) {
+		$("#ajax-response").html(JSON.stringify(response));
+	});
+}
+```
+
+and the real end point should give the response in json form, and the json structure should follow the response which specified by the dummy api in `templates/natural/ajax-contract`.
